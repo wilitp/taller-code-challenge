@@ -1,4 +1,7 @@
 
+from databases import Database
+
+
 # data model
 
 """
@@ -27,7 +30,6 @@ completed (boolean, default False)
 due_date (date, optional)
 
 """
-
 schema = """
 
 CREATE TABLE Project (
@@ -50,5 +52,8 @@ CREATE TABLE Task (
 
 
 def create_schema():
-    # execute the schema creation SQL commands
-    pass
+
+    with Database("postgresql://postgres:localhost:5432") as database:
+        # execute the schema creation SQL commands
+        database.execute(schema)
+        pass
