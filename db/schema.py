@@ -1,4 +1,4 @@
-
+import asyncio
 from databases import Database
 
 
@@ -47,13 +47,17 @@ CREATE TABLE Task (
     completed BOOLEAN DEFAULT FALSE,
     due_date DATE
 )
+
+-- create index on (project_id, priority), descending on the priority key
+CREATE INDEX idx_task_project_priority ON Task (project_id, priority DESC);
 """
 
 
 
-def create_schema():
-
-    with Database("postgresql://postgres:localhost:5432") as database:
+async def create_schema():
+    async with Database("postgresql://postgres:localhost:5432") as database:
         # execute the schema creation SQL commands
-        database.execute(schema)
-        pass
+        await database.execute(schema)
+
+if __name__ == "__main__":
+    asyncio.run(create_schema())
